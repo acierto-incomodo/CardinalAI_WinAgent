@@ -1,6 +1,6 @@
 [Setup]
 AppName=CardinalAI - WinAgent
-AppVersion=1.0.5
+AppVersion=1.0.6
 DefaultDirName={userappdata}\StormGamesStudios\Programs\CardinalAI - WinAgent
 DisableDirPage=yes
 DefaultGroupName=StormGamesStudios
@@ -12,7 +12,7 @@ AppCopyright=Copyright © 2026 StormGamesStudios. All rights reserved.
 VersionInfoCompany=StormGamesStudios
 AppPublisher=StormGamesStudios
 SetupIconFile=cardinal.ico
-VersionInfoVersion=1.0.5.0
+VersionInfoVersion=1.0.6.0
 CloseApplications=no
 DisableProgramGroupPage=no
 
@@ -49,12 +49,27 @@ Type: filesandordirs; Name: "{app}"
 Filename: "{app}\cardinal.exe"; Description: "Ejecutar CardinalAI - WinAgent"; Flags: nowait postinstall skipifsilent
 
 [Code]
-procedure CurStepChanged(CurStep: TSetupStep);
+procedure CloseCardinal();
 var
   ResultCode: Integer;
 begin
+  Exec('taskkill', '/F /IM cardinal.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  // Durante la instalación, cierra cualquier instancia abierta
   if CurStep = ssInstall then
   begin
-    Exec('taskkill', '/F /IM cardinal.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    CloseCardinal();
+  end;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  // Durante la desinstalación, cierra cualquier instancia abierta
+  if CurUninstallStep = usUninstall then
+  begin
+    CloseCardinal();
   end;
 end;
