@@ -11,7 +11,6 @@ import pystray
 from PIL import Image
 import win32event
 import win32api
-import win32con
 
 # ==============================
 # BLOQUEAR INSTANCIA ÚNICA
@@ -54,7 +53,7 @@ else:
 stop_event = threading.Event()
 
 # ==============================
-# FUNCIONES (igual que tu código anterior)
+# FUNCIONES
 # ==============================
 def ask_llm(text):
     try:
@@ -70,7 +69,9 @@ def ask_llm(text):
     except:
         return text.lower()
 
+
 def build_shortcut_dict():
+    """Devuelve diccionario nombre -> ruta de accesos directos del menú de inicio"""
     pythoncom.CoInitialize()
     shortcuts = {}
     for folder in START_MENU_FOLDERS:
@@ -87,19 +88,35 @@ def build_shortcut_dict():
                         continue
     return shortcuts
 
+
 def execute_command(command, shortcuts):
     print("Comando interpretado:", command)
     command_clean = command.translate(str.maketrans('', '', string.punctuation)).lower()
+
+    # Buscar coincidencia parcial en accesos directos
+    for sc_name, sc_path in shortcuts.items():
+        if command_clean in sc_name.lower():
+            if os.path.exists(sc_path):
+                print(f"Abrir: {sc_path}")
+                os.startfile(sc_path)
+            else:
+                print(f"No se encontró la ruta de {sc_name}: {sc_path}")
+            return
+
+    # Alias de programas (opcional)
     for prog, keys in ALIASES.items():
         for key in keys:
             if key in command_clean:
                 for sc_name, sc_path in shortcuts.items():
                     if key in sc_name.lower():
                         if os.path.exists(sc_path):
+                            print(f"Abrir: {sc_path}")
                             os.startfile(sc_path)
                         else:
                             print(f"No se encontró la ruta de {sc_name}: {sc_path}")
                         return
+
+    # Abrir páginas web si hay verbo de acción
     if any(word in command_clean for word in ACTION_WORDS):
         palabras = command_clean.split()
         for p in palabras:
@@ -114,15 +131,12 @@ def execute_command(command, shortcuts):
         if "google" in command_clean:
             webbrowser.open("https://google.com")
             return
-    if "apaga" in command_clean:
-        os.system("shutdown /s /t 5")
-    elif "reinicia" in command_clean:
-        os.system("shutdown /r /t 5")
-    else:
-        print("No entiendo el comando.")
+
+    print("No entiendo el comando.")
+
 
 # ==============================
-# HILO DE ASISTENTE
+# HILO DEL ASISTENTE
 # ==============================
 def assistant_thread():
     recognizer = sr.Recognizer()
@@ -147,9 +161,15 @@ def assistant_thread():
                     print("Error de conexión con reconocimiento de voz.")
                     continue
 
-                if any(w in text for w in WAKE_WORDS):
+                # Solo responder si se detecta la wake word
+                if any(text.startswith(w) or f" {w} " in text for w in WAKE_WORDS):
                     print("Activado por:", text)
-                    active_command = ""
+                    cmd = text
+                    for w in WAKE_WORDS:
+                        cmd = cmd.replace(w, "")
+                    cmd = cmd.strip()
+
+                    active_command = cmd
                     while True:
                         try:
                             audio_cont = recognizer.listen(source, phrase_time_limit=4)
@@ -160,24 +180,27 @@ def assistant_thread():
                             active_command += " " + phrase
                         except sr.WaitTimeoutError:
                             break
+
                     active_command = active_command.strip()
                     if active_command:
-                        respuesta = ask_llm(active_command)
-                        execute_command(respuesta, shortcuts)
+                        execute_command(active_command, shortcuts)
             except KeyboardInterrupt:
                 break
 
+
 # ==============================
-# ICONO DE LA BANDEJA
+# ICONO DE BANDEJA
 # ==============================
 def on_quit(icon, item):
     stop_event.set()
     icon.stop()
 
+
 def on_restart(icon, item):
     stop_event.set()
     icon.stop()
     os.execl(sys.executable, sys.executable, *sys.argv)
+
 
 assistant = threading.Thread(target=assistant_thread, daemon=True)
 assistant.start()

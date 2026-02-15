@@ -1,6 +1,6 @@
 [Setup]
 AppName=CardinalAI - WinAgent
-AppVersion=1.0.6
+AppVersion=1.0.7
 DefaultDirName={userappdata}\StormGamesStudios\Programs\CardinalAI - WinAgent
 DisableDirPage=yes
 DefaultGroupName=StormGamesStudios
@@ -12,7 +12,7 @@ AppCopyright=Copyright © 2026 StormGamesStudios. All rights reserved.
 VersionInfoCompany=StormGamesStudios
 AppPublisher=StormGamesStudios
 SetupIconFile=cardinal.ico
-VersionInfoVersion=1.0.6.0
+VersionInfoVersion=1.0.7.0
 CloseApplications=no
 DisableProgramGroupPage=no
 
