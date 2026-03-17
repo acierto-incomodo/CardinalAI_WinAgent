@@ -1,26 +1,55 @@
 {
-  "name": "prueba3",
-  "version": "1.0.0",
-  "description": "Cliente local de IA con diseño Liquid Glass para LM Studio",
+  "name": "cardinal-ai-local",
+  "version": "1.0.1",
+  "description": "Cliente local de IA con diseño Cardinal para LM Studio",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux",
     "pack": "electron-builder --dir"
   },
-  "author": "Tu Nombre",
+  "author": "StormGamesStudios <meliodas.aitor@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acierto-incomodo/CardinalAI_WinAgent.git"
+  },
   "build": {
-    "appId": "com.tu-nombre.glassai",
-    "productName": "Glass AI",
-    "mac": {
-      "category": "public.app-category.productivity"
+    "appId": "com.stormgamesstudios.cardinalai",
+    "productName": "CardinalAI Local",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
     },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "acierto-incomodo",
+        "repo": "CardinalAI_WinAgent"
+      }
+    ],
     "win": {
-      "target": "nsis"
+      "target": ["nsis"],
+      "icon": "icon.png",
+      "publish": ["github"]
+    },
+    "nsis": {
+      "oneClick": true,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "differentialPackage": true,
+      "shortcutName": "CardinalAI Local",
+      "include": "installer.nsh",
+      "artifactName": "${productName}-Setup.${ext}"
     },
     "linux": {
-      "target": "AppImage"
+      "target": ["AppImage", "deb"],
+      "category": "Office",
+      "icon": "icon.png",
+      "publish": ["github"],
+      "artifactName": "${productName}-Setup.${ext}"
     }
   },
   "dependencies": {

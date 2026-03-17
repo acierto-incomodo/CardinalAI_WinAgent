@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Glass AI Vision</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,9 +17,9 @@
       </div>
       <div id="chat-list" class="chat-list"></div>
       <div class="sidebar-footer">
-        <p style="font-size: 10px; color: #666; text-align: center; margin-bottom: 10px;">Doble clic en título para renombrar</p>
-        <button id="clear-all-btn" class="delete-btn-alt">🗑️ Limpiar Todo</button>
-        <button id="open-settings-btn" class="settings-trigger">⚙️ Ajustes de Usuario</button>
+        <p class="sidebar-hint">Doble clic para renombrar</p>
+        <button id="clear-all-btn" class="delete-btn-alt">🗑️ Borrar Historial</button>
+        <button id="open-settings-btn" class="settings-trigger">⚙️ Ajustes</button>
       </div>
     </aside>
 
@@ -29,8 +32,8 @@
         <div class="input-stack">
           <div id="file-preview-container" class="preview-area"></div>
           <div class="spotlight-bar">
-            <button id="attach-btn" class="icon-btn" title="Adjuntar imagen o archivo">📎</button>
-            <textarea id="message-input" placeholder="Escribe un mensaje..." rows="1"></textarea>
+            <button id="attach-btn" class="icon-btn">📎</button>
+            <textarea id="message-input" placeholder="Escribe aquí..." rows="1" spellcheck="true"></textarea>
             <button id="send-btn">↑</button>
           </div>
         </div>
@@ -40,18 +43,29 @@
 
   <div id="settings-modal" class="modal">
     <div class="modal-content">
-      <h2>Ajustes de Usuario</h2>
-      <div class="setting-item">
-        <label>Tu Nombre:</label>
-        <input type="text" id="user-name-input" placeholder="Ej: Alex">
+      <div class="modal-header">
+        <h2>Configuración</h2>
+        <p>Personaliza tu experiencia con Glass AI</p>
       </div>
-      <div class="setting-item">
-        <label>Instrucciones Personalizadas:</label>
-        <textarea id="user-context-input" placeholder="¿Cómo quieres que te responda la IA?"></textarea>
+      
+      <div class="settings-body">
+        <div class="setting-item">
+          <label>👤 Tu Nombre o Alias</label>
+          <input type="text" id="user-name-input" placeholder="¿Cómo quieres que te llame?">
+        </div>
+
+        <div class="setting-item">
+          <label>🧠 Instrucciones del Sistema</label>
+          <div class="textarea-container">
+            <textarea id="user-context-input" class="context-area" placeholder="Ej: Sé conciso, responde siempre en español y usa un tono amigable."></textarea>
+            <span class="textarea-hint">Estas instrucciones definen la personalidad de la IA.</span>
+          </div>
+        </div>
       </div>
+
       <div class="modal-actions">
-        <button id="save-settings-btn">Guardar</button>
-        <button id="close-settings-btn">Cerrar</button>
+        <button id="close-settings-btn" class="btn-secondary">Cancelar</button>
+        <button id="save-settings-btn" class="btn-primary">Guardar Cambios</button>
       </div>
     </div>
   </div>
