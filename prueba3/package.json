@@ -1,0 +1,33 @@
+{
+  "name": "prueba3",
+  "version": "1.0.0",
+  "description": "Cliente local de IA con diseño Liquid Glass para LM Studio",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "pack": "electron-builder --dir"
+  },
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "build": {
+    "appId": "com.tu-nombre.glassai",
+    "productName": "Glass AI",
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.3"
+  },
+  "devDependencies": {
+    "electron": "^41.0.2",
+    "electron-builder": "^26.8.1"
+  }
+}

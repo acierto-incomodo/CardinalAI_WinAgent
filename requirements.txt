@@ -1,8 +1,0 @@
-requests
-speechrecognition
-pyaudio
-pyttsx3
-pywin32
-pyinstaller
-pystray
-pillow
