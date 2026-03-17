@@ -1,6 +1,6 @@
 :root {
     --sidebar-bg: rgba(0, 0, 0, 0.4);
-    --glass-bg: rgba(20, 20, 25, 0.7);
+    --glass-bg: rgba(20, 20, 25, 0.75);
     --glass-border: rgba(255, 255, 255, 0.1);
     --accent: #007aff;
     --text: #ffffff;
@@ -18,77 +18,114 @@
   
   .app-container { display: flex; height: 100vh; backdrop-filter: blur(40px) saturate(180%); }
   
-  /* Sidebar */
   .sidebar { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--glass-border); display: flex; flex-direction: column; }
-  .sidebar-header { padding: 25px 20px; -webkit-app-region: drag; }
-  .new-chat-btn { width: 100%; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: white; cursor: pointer; -webkit-app-region: no-drag; }
+  .sidebar-header { padding: 25px 20px; }
+  .new-chat-btn { width: 100%; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: white; cursor: pointer; transition: 0.3s; }
+  .new-chat-btn:hover { background: rgba(255,255,255,0.2); }
+  
   .chat-list { flex: 1; overflow-y: auto; padding: 10px; }
-  .chat-item { padding: 10px 15px; border-radius: 10px; margin-bottom: 5px; display: flex; justify-content: space-between; cursor: pointer; font-size: 14px; }
-  .chat-item.active { background: rgba(0, 122, 255, 0.2); border: 1px solid var(--accent); }
-  .delete-chat { color: #ff453a; border: none; background: none; cursor: pointer; opacity: 0; }
+  .chat-item { padding: 10px; border-radius: 10px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; transition: 0.2s; border: 1px solid transparent; }
+  .chat-item:hover { background: rgba(255,255,255,0.05); }
+  .chat-item.active { background: rgba(0, 122, 255, 0.15); border: 1px solid var(--accent); }
+  
+  .chat-item span { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 5px; }
+  .chat-item input { background: rgba(255,255,255,0.1); border: 1px solid var(--accent); color: white; border-radius: 4px; padding: 2px 5px; width: 80%; font-size: 13px; outline: none; }
+  
+  .delete-chat { color: #ff453a; border: none; background: none; cursor: pointer; opacity: 0; padding: 0 5px; }
   .chat-item:hover .delete-chat { opacity: 1; }
   
-  /* Main */
+  .sidebar-footer { padding: 15px; border-top: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 8px; }
+  .delete-btn-alt { background: rgba(255, 69, 58, 0.1); color: #ff453a; border: none; padding: 8px; border-radius: 8px; cursor: pointer; }
+  .settings-trigger { background: none; border: 1px solid var(--glass-border); color: #aaa; padding: 8px; border-radius: 8px; cursor: pointer; }
+  
   .main-content { flex: 1; display: flex; flex-direction: column; background: var(--glass-bg); }
-  .title-bar { display: flex; justify-content: space-between; padding: 15px 25px; -webkit-app-region: drag; border-bottom: 1px solid var(--glass-border); }
-  .window-controls { display: flex; gap: 8px; -webkit-app-region: no-drag; }
-  .control-btn { width: 12px; height: 12px; border-radius: 50%; border: none; }
-  .close { background: #ff5f56; } .minimize { background: #ffbd2e; } .maximize { background: #28c940; }
-  
-  /* Chat Container */
   .chat-container { flex: 1; overflow-y: auto; padding: 20px; }
-  .chat-wrapper { max-width: 750px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
-/* Añade esto a tus estilos existentes para los mensajes */
-.message {
-    max-width: 85%;
-    padding: 14px 18px;
-    border-radius: 20px;
-    line-height: 1.5;
-    font-size: 16px;
-    animation: appleAppear 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
+  .chat-wrapper { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
   
-  @keyframes appleAppear {
-    from {
-      opacity: 0;
-      transform: scale(0.95) translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-  }
-  
-  .user-message { align-self: flex-end; background: var(--accent); }
+  .message { max-width: 85%; padding: 14px; border-radius: 18px; line-height: 1.5; font-size: 15px; animation: appleAppear 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  @keyframes appleAppear { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .user-message { align-self: flex-end; background: var(--accent); color: white; }
   .ai-message { align-self: flex-start; background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); }
   
-  /* Spotlight Input Bar */
-  .input-area { padding: 40px; display: flex; justify-content: center; }
+/* ... (estilos anteriores igual) ... */
+
+/* Animación de entrada para el área de input */
+.input-area {
+    padding: 20px 40px 40px;
+    animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Efecto focus en la barra spotlight */
   .spotlight-bar {
-    width: 100%; max-width: 700px;
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(25px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 18px;
-    display: flex; align-items: center;
-    padding: 12px 16px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-    transition: transform 0.2s;
-  }
-  .spotlight-bar:focus-within { transform: scale(1.02); background: rgba(255, 255, 255, 0.15); }
-  
-  .search-icon { color: rgba(255,255,255,0.4); margin-right: 15px; display: flex; }
-  .search-icon svg { width: 20px; height: 20px; }
-  
-  textarea {
-    flex: 1; background: none; border: none; color: white;
-    resize: none; outline: none; font-size: 18px; padding: 5px 0;
-    max-height: 200px;
+    backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 12px 18px;
+    transition: all 0.3s ease; /* Transición suave */
   }
   
-  #send-btn {
-    background: var(--accent); color: white; border: none;
-    width: 32px; height: 32px; border-radius: 8px;
-    display: flex; justify-content: center; align-items: center;
-    cursor: pointer; margin-left: 15px;
+  .spotlight-bar:focus-within {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(0, 122, 255, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* Estilo para el input de renombrar en la sidebar */
+  .rename-input {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid var(--accent) !important;
+    color: white !important;
+    font-size: 13px !important;
+    border-radius: 4px;
+    width: 80%;
+    outline: none;
+    padding: 2px 5px;
+  }
+  
+  /* ... (resto del css igual) ... */
+  .input-stack { max-width: 700px; margin: 0 auto; width: 100%; }
+  .preview-area { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .preview-item { position: relative; width: 60px; height: 60px; border-radius: 10px; overflow: hidden; border: 1px solid var(--accent); }
+  .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+  .remove-file { position: absolute; top: 2px; right: 2px; background: #ff453a; color: white; border: none; border-radius: 50%; width: 16px; height: 16px; cursor: pointer; font-size: 10px; }
+  
+  .spotlight-bar { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; display: flex; align-items: center; padding: 12px 18px; }
+  .icon-btn { background: none; border: none; color: #aaa; font-size: 20px; cursor: pointer; margin-right: 15px; }
+  textarea { flex: 1; background: none; border: none; color: white; resize: none; outline: none; font-size: 16px; }
+  #send-btn { background: var(--accent); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
+  
+  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; justify-content: center; align-items: center; }
+  .modal-content { background: #1a1a1a; padding: 30px; border-radius: 24px; width: 400px; border: 1px solid var(--glass-border); }
+  .setting-item { margin: 15px 0; display: flex; flex-direction: column; gap: 8px; }
+  .setting-item input, .setting-item textarea { background: #262626; border: 1px solid #333; color: white; padding: 12px; border-radius: 10px; outline: none; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+  #save-settings-btn { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; }
+  #close-settings-btn { background: rgba(255,255,255,0.1); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; }
+
+  /* ... (Tus estilos anteriores de .input-area, .spotlight-bar, etc.) ... */
+
+textarea {
+    flex: 1;
+    background: none;
+    border: none;
+    color: white;
+    resize: none;
+    outline: none;
+    font-size: 16px;
+    /* Asegura que el subrayado rojo de error sea visible */
+    caret-color: var(--accent);
+  }
+  
+  /* Opcional: Estilo para cuando el textarea está en foco */
+  textarea:focus {
+    outline: none;
   }
