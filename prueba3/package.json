@@ -42,14 +42,14 @@
       "differentialPackage": true,
       "shortcutName": "CardinalAI Local",
       "include": "installer.nsh",
-      "artifactName": "${productName}-Setup.${ext}"
+      "artifactName": "CardinalAI-Local-Setup.${ext}"
     },
     "linux": {
       "target": ["AppImage", "deb"],
       "category": "Office",
       "icon": "icon.png",
       "publish": ["github"],
-      "artifactName": "${productName}-Setup.${ext}"
+      "artifactName": "CardinalAI-Local-Setup.${ext}"
     }
   },
   "dependencies": {
